@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>INTL-DA-05</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Code+Latin&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Unica+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+  <div id="spinner" class="d-none" style="position: fixed;z-index: 9999;width:100%;height:100%; background-color: rgba(235, 229, 229, 0.3);">
+    <div class="spinner">
+      <div class="dot1"></div>
+      <div class="dot2"></div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-dark bg-dark text-light w-100 px-5">
+    <div>
+      <a class="nav-link" href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" width="70" alt="Manthan logo">
+      </a>
+    </div>
+    <a style="color:lavenderblush;cursor: default; text-decoration: none; font-size:2.5rem; font-family: 'Concert One', cursive;">MANTHAN
+      2021</a>
+    <div style="font-family: 'Montserrat Alternates', sans-serif; font-size:20px;">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link disabled">Analyze</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <br>
+  <div class="container" style="z-index: 10;">
+    <ul class="nav nav-tabs bg-dark bg-gradient justify-content-center pt-2 m-0 border-bottom-0"
+      style="font-family: 'Montserrat Alternates', sans-serif; font-size:20px;border-top-left-radius: 5px;border-top-right-radius: 5px; border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation" style="list-style: none;">
+        <a class="nav-link active border-bottom-0" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true" onclick="textopener()" href="#">Text
+          Input</a>
+      </li>
+      <li class="nav-item" role="presentation" style="list-style: none;">
+        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" onclick="fileopener()" href="#">Choose Image</a>
+      </li>
+      <li class="nav-item" role="presentation" style="list-style: none;">
+        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" onclick="urlopener()" href="#">Enter Link</a>
+      </li>
+    </ul>
+
+    <div class="text" id="txt">
+      <form action="{{url_for('text')}}" method="POST">
+        <textarea name="text" rows="15" style="resize:none; width: 100%;border: 0px;" placeholder="Enter your Hinglish text here."
+          id="text"></textarea>
+        <br>
+        <div class="d-flex justify-content-center rounded">
+          <input type="submit" onclick="showLoader()" class="bg-primary border-0 text-light p-2">
+        </div>
+      </form>
+    </div>
+
+    <div class="input-group mb-3" style="display:none;" id="file">
+      <div class="custom-file bg-light rounded">
+        <form action="{{url_for('image')}}" method="POST">
+          <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+            <input type="file" accept="image/png, image/jpeg" id="image" name="image" style="cursor: pointer">
+          </div>
+          <div class="d-flex justify-content-center mt-2 rounded">
+            <input type="submit" onclick="showLoader()"  class="bg-primary border-0 text-light p-2">
+          </div>
+        </form>
+      </div>
+      
+    </div>
+
+    <div class="link" style="display:none;" id="url">
+      <form action="{{url_for('link')}}" method="POST">
+        <div class="d-flex justify-content-center align-items-center  bg-light" style="height: 60vh">
+          <input class="rounded" name="link" placeholder="Enter URL" id="link" type="url" style="width: 70%;">
+        </div>
+        <div class="d-flex justify-content-center">
+          <input type="submit" onclick="showLoader()"  class="bg-primary border-0 text-light">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function textopener() {
+      var texter = document.querySelector('#txt');
+      texter.setAttribute('style', 'display:block')
+      var fileUploader = document.querySelector('#file');
+      fileUploader.setAttribute('style', 'display:none')
+      var urlUploader = document.querySelector('#url');
+      urlUploader.setAttribute('style', 'display:none')
+    }
+
+    function fileopener() {
+      var texter = document.querySelector('#txt');
+      texter.setAttribute('style', 'display:none')
+      var fileUploader = document.querySelector('#file');
+      fileUploader.setAttribute('style', 'display:block')
+      var urlUploader = document.querySelector('#url');
+      urlUploader.setAttribute('style', 'display:none')
+    }
+
+    function urlopener() {
+      var texter = document.querySelector('#txt');
+      texter.setAttribute('style', 'display:none')
+      var fileUploader = document.querySelector('#file');
+      fileUploader.setAttribute('style', 'display:none')
+      var urlUploader = document.querySelector('#url');
+      urlUploader.setAttribute('style', 'display:block')
+    }
+
+    function showLoader() {
+      var spinner = document.querySelector('#spinner')
+      spinner.setAttribute('class', 'd-flex justify-content-center align-items-center')
+    }
+
+    function hideLoader() {
+      var spinner = document.querySelector('#spinner')
+      spinner.setAttribute('class', 'd-none')
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+    </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</body>
+
+</html>
